@@ -179,3 +179,47 @@ footer ul {
     height: 2.5rem;
   }
 }
+
+/* PAGE PRODUIT */
+
+.solo-item {
+  max-width: 500px;
+}
+
+.item p {
+  max-width: 500px;
+  margin: auto;
+  padding-bottom: 1rem;
+  color: #f3e9f1 !important;
+}
+
+.item button {
+  padding: 1rem 2rem 1rem 2rem;
+  margin: 1rem;
+  border: none;
+  border-radius: 50px;
+  font-weight: 900;
+  font-size: 1.5rem;
+  background-color: #f3e9f1;
+}
+
+select {
+  background-color: #f3e9f1;
+}
+
+/* PAGE CONTACT */
+
+label {
+  color: #f3e9f1 !important;
+}
+
+.form-group {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+
+table {
+  width: 100%;
+  font-size: 1.2rem;
+  background-color: #f3e9f1;
+}
