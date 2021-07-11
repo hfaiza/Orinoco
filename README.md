@@ -1,15 +1,5 @@
-# Orinoco #
+# Projet 5 : Construire un site e-commerce
 
-This is the back end server for Project 5 of the Junior Web Developer path.
+Partie serveur : https://github.com/OpenClassrooms-Student-Center/JWDP5.git
 
-### Prerequisites ###
-
-You will need to have Node and `npm` installed locally on your machine.
-
-### Installation ###
-
-Clone this repo. From within the project folder, run `npm install`. You 
-can then run the server with `node server`. 
-The server should run on `localhost` with default port `3000`. If the
-server runs on another port for any reason, this is printed to the
-console when the server starts, e.g. `Listening on port 3001`.
+Pour utiliser l'application web, il est nécessaire d'installer Node.js et d'initialiser NPM. Il faut ensuite lancer le serveur avec la ligne de commande "node server".
