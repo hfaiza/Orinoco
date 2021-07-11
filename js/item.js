@@ -16,6 +16,7 @@ showCamera = (oneCamera) => {
   cameraDiv.classList.add("bg-secondary");
   cameraDiv.innerHTML = `<img
                           src="${oneCamera.imageUrl}"
+                          alt="Caméra vintage ${oneCamera.name}."
                           class="solo-item border border-5 border-primary mt-5 mb-2" />
                           <div class="">
                             <h1>${oneCamera.name}</h1>

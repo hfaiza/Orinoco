@@ -12,7 +12,10 @@ showCameras = (cameras) => {
     cameraArticle.classList.add("border", "border-5", "border-primary", "gap");
     // Pour insérer dynamiquement le contenu de l'article (image,  nom et  prix de la caméra) :
     cameraArticle.innerHTML = `<a href="item.html?id=${camera._id}">
-                                 <img src="${camera.imageUrl}" />
+                                 <img
+                                  src="${camera.imageUrl}"
+                                  alt="Caméra vintage ${camera.name}."
+                                 />
                                  <div class="d-flex justify-content-between bg-primary p-2">
                                    <h3>
                                    ${camera.name}
