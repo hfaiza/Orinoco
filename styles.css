@@ -220,6 +220,14 @@ label {
 
 table {
   width: 100%;
+}
+
+tr {
+  border: solid 1px #f3e9f1;
+}
+
+th,
+td {
   font-size: 1.2rem;
-  background-color: #f3e9f1;
+  color: #f3e9f1 !important;
 }
