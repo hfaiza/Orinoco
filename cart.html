@@ -55,13 +55,14 @@
         <h1 class="text-center pt-3">Panier</h1>
         <div class="p-5">
           <table id="cart-table">
-            <tr class="d-flex justify-content-between px-3">
-              <th>Produit</th>
-              <th>Prix</th>
+            <tr>
+              <th class="px-3">Produit</th>
+              <th class="px-3 right">Prix</th>
             </tr>
+            <!-- CONTENU AJOUTÉ EN JAVASCRIPT -->
           </table>
-          <!-- CONTENU AJOUTÉ EN JAVASCRIPT -->
         </div>
+        <button id="empty-cart" class="bg-primary m-5">Vider le panier</button>
         <div class="p-5">
           <h2 class="text-center">Passer une commande</h2>
         <form>
@@ -115,6 +116,9 @@
               required
             />
           </div>
+          <div class="text-center mt-3">
+          <input id="order" type="submit" value="Valider" class="text-center">
+          </div>
         </form>
         </div>
       </main>
@@ -129,22 +133,7 @@
         <li class="p-3 pt-md-4 pb-md-4"><a href="#">Mentions légales</a></li>
       </ul>
     </footer>
-       <!-- SCRIPTS JS + BOOTSTRAP --> 
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
+    <!-- SCRIPT JS -->
     <script src="js/cart.js"></script>
   </body>
 </html>

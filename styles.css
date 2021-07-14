@@ -36,7 +36,8 @@ a {
 }
 
 h1,
-h2 {
+h2,
+#product-content p {
   color: #f7edf5 !important;
 }
 
@@ -101,6 +102,11 @@ article {
   height: 250px;
   width: 100%;
   overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+article:hover {
+  transform: scale(1.02);
 }
 
 article img {
@@ -193,14 +199,22 @@ footer ul {
   color: #f3e9f1 !important;
 }
 
-.item button {
+#button,
+#empty-cart,
+#order {
   padding: 1rem 2rem 1rem 2rem;
   margin: 1rem;
   border: none;
   border-radius: 50px;
   font-weight: 900;
   font-size: 1.5rem;
-  background-color: #f3e9f1;
+  transition: all 0.2s ease-in-out;
+}
+
+#button:hover,
+#empty-cart:hover,
+#order:hover {
+  transform: scale(1.02);
 }
 
 select {
@@ -224,10 +238,20 @@ table {
 
 tr {
   border: solid 1px #f3e9f1;
+  border-collapse: collapse !important;
 }
 
-th,
+th {
+  font-size: 1.2rem;
+  background-color: #f3e9f1;
+  color: #261624;
+}
+
 td {
   font-size: 1.2rem;
   color: #f3e9f1 !important;
+}
+
+.right {
+  text-align: right;
 }
