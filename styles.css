@@ -221,7 +221,7 @@ select {
   background-color: #f3e9f1;
 }
 
-/* PAGE CONTACT */
+/* PAGE PANIER */
 
 label {
   color: #f3e9f1 !important;
@@ -254,4 +254,9 @@ td {
 
 .right {
   text-align: right;
+}
+
+strong {
+  color: #f3e9f1 !important;
+  font-weight: bold;
 }
