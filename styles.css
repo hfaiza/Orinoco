@@ -37,7 +37,8 @@ a {
 
 h1,
 h2,
-#product-content p {
+#product-content p,
+.message p {
   color: #f7edf5 !important;
 }
 
@@ -259,4 +260,14 @@ td {
 strong {
   color: #f3e9f1 !important;
   font-weight: bold;
+}
+
+/* NOTIFICATION */
+
+.message {
+  padding: 8rem 1rem 8rem 1rem;
+}
+
+.message p {
+  font-size: 1.5rem;
 }

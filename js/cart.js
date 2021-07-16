@@ -52,31 +52,34 @@ emptyCartButton.addEventListener("click", emptyCart);
 
 // Pour envoyer les données de la commande et du formulaire de contact au back-end :
 
-placeAnOrder = () => {
-  let formData = new FormData();
+const orderButton = document.getElementById("order");
+orderButton.addEventListener("click", (event) => {
+  let data = {
+    // Pour récupérer les données entrées par l'utilisateur :
+    contact: {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: address.value,
+      city: city.value,
+      email: email.value,
+    },
+    // Pour récupérer les produits du panier stockés dans le localStorage :
+    products: JSON.parse(getCart),
+  };
+
   fetch("http://localhost:3000/api/cameras/order", {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      contact: {
-        firstName: formData.get("firstName"),
-        lastName: formData.get("lastName"),
-        email: formData.get("email"),
-        address: formData.get("address"),
-        city: formData.get("city"),
-      },
-      products: JSON.parse(getCart),
-    }),
-  });
-  // localStorage.clear("products");
-};
-
-// .then((response) => response.json())
-// .then((cameras) => showCameras(cameras))
-// .catch((error) => alert(error));
-
-const orderButton = document.getElementById("order");
-orderButton.addEventListener("click", placeAnOrder);
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((orderInfo) => {
+      // Pour stocker l'identifiant de commande, le nom et prénom dans le localStorage :
+      localStorage.setItem("orderid", orderInfo.orderId);
+      localStorage.setItem("firstname", orderInfo.contact.firstName);
+      localStorage.setItem("lastname", orderInfo.contact.lastName);
+    })
+    .catch((err) => console.log(err));
+  // Pour afficher la page de confirmation de commande :
+  window.location.href = "notification.html";
+});

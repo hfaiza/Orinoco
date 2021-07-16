@@ -42,7 +42,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="cart.html" class="nav-link">
+              <a href="cart.html" class="nav-link active">
                 <i class="bi bi-cart-fill" title="Mon panier"></i
                 ><span class="content">Mon panier</span>
               </a>
@@ -67,11 +67,11 @@
         <button id="empty-cart" class="bg-primary mx-5">Vider le panier</button>
         <div class="p-5">
           <h2 class="text-center">Passer une commande</h2>
-        <form>
+        <form id="form">
           <div class="form-group bg-secondary">
-            <label for="surname">Nom</label>
+            <label for="lastName">Nom</label>
             <input
-              id="surname"
+              id="lastName"
               name="lastName"
               type="text"
               class="form-control"
@@ -79,9 +79,9 @@
             />
           </div>
           <div class="form-group">
-            <label for="name">Prénom</label>
+            <label for="firstName">Prénom</label>
             <input
-              id="name"
+              id="firstName"
               name="firstName"
               type="text"
               class="form-control"
@@ -118,9 +118,9 @@
               required
             />
           </div>
-          <div class="text-center mt-3">
-          <input id="order" type="submit" value="Valider" class="text-center">
-          </div>
+            <div class="text-center mt-3">
+              <input id="order" type="button" value="Valider" class="text-center">
+            </div>
         </form>
         </div>
       </main>
