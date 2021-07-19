@@ -52,34 +52,42 @@ emptyCartButton.addEventListener("click", emptyCart);
 
 // Pour envoyer les données de la commande et du formulaire de contact au back-end :
 
+const form = document.getElementById("form");
 const orderButton = document.getElementById("order");
 orderButton.addEventListener("click", (event) => {
-  let data = {
-    // Pour récupérer les données entrées par l'utilisateur :
-    contact: {
-      firstName: firstName.value,
-      lastName: lastName.value,
-      address: address.value,
-      city: city.value,
-      email: email.value,
-    },
-    // Pour récupérer les produits du panier stockés dans le localStorage :
-    products: JSON.parse(getCart),
-  };
+  // Pour vérifier que le panier n'est pas vide et que les champs du formulaire sont correctement saisis :
+  if (getCart !== null && form.reportValidity()) {
+    let data = {
+      // Pour récupérer les données entrées par l'utilisateur :
+      contact: {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value,
+      },
+      // Pour récupérer les produits du panier stockés dans le localStorage :
+      products: JSON.parse(getCart),
+    };
 
-  fetch("http://localhost:3000/api/cameras/order", {
-    method: "POST",
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .then((orderInfo) => {
-      // Pour stocker l'identifiant de commande, le nom et prénom dans le localStorage :
-      localStorage.setItem("orderid", orderInfo.orderId);
-      localStorage.setItem("firstname", orderInfo.contact.firstName);
-      localStorage.setItem("lastname", orderInfo.contact.lastName);
+    fetch("http://localhost:3000/api/cameras/order", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(data),
     })
-    .catch((err) => console.log(err));
-  // Pour afficher la page de confirmation de commande :
-  window.location.href = "notification.html";
+      .then((response) => response.json())
+      .then((orderInfo) => {
+        // Pour stocker l'identifiant de commande, le nom et prénom dans le localStorage :
+        localStorage.setItem("orderid", orderInfo.orderId);
+        localStorage.setItem("firstname", orderInfo.contact.firstName);
+        localStorage.setItem("lastname", orderInfo.contact.lastName);
+      })
+      .catch((err) => console.log(err));
+    // Pour afficher la page de confirmation de commande :
+    window.location.href = "notification.html";
+  } else {
+    alert(
+      "Merci de renseigner correctement tous les champs du formulaire et de vérifier que votre panier n'est pas vide."
+    );
+  }
 });

@@ -4,7 +4,7 @@ fetch("http://localhost:3000/api/cameras")
   .then((cameras) => showCameras(cameras)) // Pour récupérer vraie valeur de la fonction précédente
   .catch((error) => alert(error)); // Fonction appelée si une erreur survient lors de la requête
 
-showCameras = (cameras) => {
+const showCameras = (cameras) => {
   const camerasList = document.querySelector(".cameralist");
   // Pour exécuter la fonction sur chaque élément du tableau (création d'un <article> pour chaque caméra) :
   cameras.forEach((camera) => {

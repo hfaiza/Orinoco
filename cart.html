@@ -51,22 +51,22 @@
         </nav>
       </div>
     </header>
-      <main class="bg-secondary">
-        <h1 class="text-center pt-3">Panier</h1>
-        <div class="p-5">
-          <table id="cart-table">
-            <thead>
-              <tr>
-                <th class="px-3">Produit</th>
-                <th class="px-3 right">Prix</th>
-              </tr>
-            </thead>
-            <!-- CONTENU AJOUTÉ EN JAVASCRIPT -->
-          </table>
-        </div>
-        <button id="empty-cart" class="bg-primary mx-5">Vider le panier</button>
-        <div class="p-5">
-          <h2 class="text-center">Passer une commande</h2>
+    <main class="bg-secondary">
+      <h1 class="text-center pt-3">Panier</h1>
+      <div class="p-5">
+        <table id="cart-table">
+          <thead>
+            <tr>
+              <th class="px-3">Produit</th>
+              <th class="px-3 right">Prix</th>
+            </tr>
+          </thead>
+          <!-- CONTENU AJOUTÉ EN JAVASCRIPT -->
+        </table>
+      </div>
+      <button id="empty-cart" class="bg-primary mx-5">Vider le panier</button>
+      <div class="p-5">
+        <h2 class="text-center">Passer une commande</h2>
         <form id="form">
           <div class="form-group bg-secondary">
             <label for="lastName">Nom</label>
@@ -118,13 +118,17 @@
               required
             />
           </div>
-            <div class="text-center mt-3">
-              <input id="order" type="button" value="Valider" class="text-center">
-            </div>
+          <div class="text-center mt-3">
+            <input
+              id="order"
+              type="button"
+              value="Valider"
+              class="text-center"
+            />
+          </div>
         </form>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
     <!-- FOOTER -->
     <footer class="bg-primary">
       <ul class="d-md-flex list-unstyled justify-content-around m-auto">

@@ -262,6 +262,10 @@ strong {
   font-weight: bold;
 }
 
+input {
+  background-color: #f3e9f1 !important;
+}
+
 /* NOTIFICATION */
 
 .message {
