@@ -1,9 +1,10 @@
 // Pour envoyer une requête HTTP de type GET au service web afin de récupérer les données :
 fetch("http://localhost:3000/api/cameras")
-  .then((response) => response.json()) // Fonction appelée pour récupérer résultat de la requête au format JSON
-  .then((cameras) => showCameras(cameras)) // Pour récupérer vraie valeur de la fonction précédente
+  .then((response) => response.json()) // Fonction appelée pour convertir le résultat de la requête au format JSON
+  .then((cameras) => showCameras(cameras)) // Pour récupérer le contenu de la réponse
   .catch((error) => alert(error)); // Fonction appelée si une erreur survient lors de la requête
 
+// Pour afficher tous les articles disponibles à la vente :
 const showCameras = (cameras) => {
   const camerasList = document.querySelector(".cameralist");
   // Pour exécuter la fonction sur chaque élément du tableau (création d'un <article> pour chaque caméra) :
@@ -23,7 +24,7 @@ const showCameras = (cameras) => {
                                    <p>
                                    ${camera.price / 100} €
                                    </p>
-                                </div>
+                                 </div>
                                </a>`;
     // Pour insérer l'article en tant que dernier enfant du parent <div> :
     camerasList.append(cameraArticle);

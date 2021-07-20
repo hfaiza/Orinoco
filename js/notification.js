@@ -1,4 +1,4 @@
-// Pour récupérer les données stockées dans le localStorage :
+// Pour récupérer les données stockées dans le localStorage (prix total, identifiant de commande, prénom et nom) :
 const getTotalPrice = localStorage.getItem("totalprice");
 const getOrderId = localStorage.getItem("orderid");
 const getFirstName = localStorage.getItem("firstname");
@@ -21,14 +21,10 @@ const getOrderData = () => {
   main.append(messageDiv);
 };
 
+// Pour exécuter la fonction :
 getOrderData();
 
-// Pour vider le panier et les informations de l'utilisateur après le chargement de la page :
-/* if (document.readyState === "complete") {
-  localStorage.clear();
-}
- */
-
+// Pour vider le panier et les informations de l'utilisateur au clic de souris sur la page :
 const clearLocalStorage = () => {
   localStorage.clear();
 };

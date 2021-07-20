@@ -1,5 +1,5 @@
 const cartTable = document.getElementById("cart-table"); // Pour accéder au <table> qui affichera les produits du panier
-const getCart = localStorage.getItem("products"); // Pour accéder à la clé "products" du local Storage
+const getCart = localStorage.getItem("products"); // Pour accéder à la clé "products" du localStorage
 let totalPrice = 0; // Pour stocker le prix total du panier
 
 // Affichage des produits dans le panier :
@@ -23,8 +23,8 @@ if (getCart == null) {
                                     </td>
                                   </tr>`;
         cartTable.append(cartTableRow);
-        totalPrice += itemInfo.price;
-        localStorage.setItem("totalprice", totalPrice);
+        totalPrice += itemInfo.price; // Pour additionner les prix des produits du panier
+        localStorage.setItem("totalprice", totalPrice); // Pour stocker le prix total dans le localStorage
       })
       .catch((error) => alert(error));
   });
@@ -45,20 +45,19 @@ emptyCart = () => {
   location.reload();
 };
 
+/* On utilise la méthode addEventListener() pour surveiller les clics de souris sur le bouton 
+"Vider le panier", qui appelle la fonction emptyCart : */
 const emptyCartButton = document.getElementById("empty-cart");
 emptyCartButton.addEventListener("click", emptyCart);
-/* On utilise la méthode addEventListener() pour surveiller les clics de souris sur le bouton 
-"Vider le panier", qui appelle la fonction stockée dans la variable emptyCart : */
 
-// Pour envoyer les données de la commande et du formulaire de contact au back-end :
-
+// Pour envoyer les données de la commande et du formulaire au back-end :
 const form = document.getElementById("form");
 const orderButton = document.getElementById("order");
 orderButton.addEventListener("click", (event) => {
   // Pour vérifier que le panier n'est pas vide et que les champs du formulaire sont correctement saisis :
   if (getCart !== null && form.reportValidity()) {
     let data = {
-      // Pour récupérer les données entrées par l'utilisateur :
+      // Pour récupérer les données entrées par l'utilisateur dans le formulaire :
       contact: {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -71,13 +70,13 @@ orderButton.addEventListener("click", (event) => {
     };
 
     fetch("http://localhost:3000/api/cameras/order", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify(data),
+      method: "POST", // Pour envoyer une requête HTTP de type POST au service web afin d'envoyer des données
+      headers: { "Content-type": "application/json" }, // Indique le type de contenu envoyé (JSON)
+      body: JSON.stringify(data), // Pour convertir la valeur de "data" (contact + products) en chaîne JSON
     })
       .then((response) => response.json())
       .then((orderInfo) => {
-        // Pour stocker l'identifiant de commande, le nom et prénom dans le localStorage :
+        // Pour stocker l'identifiant de commande reçu, le nom et le prénom dans le localStorage :
         localStorage.setItem("orderid", orderInfo.orderId);
         localStorage.setItem("firstname", orderInfo.contact.firstName);
         localStorage.setItem("lastname", orderInfo.contact.lastName);
@@ -86,6 +85,7 @@ orderButton.addEventListener("click", (event) => {
     // Pour afficher la page de confirmation de commande :
     window.location.href = "notification.html";
   } else {
+    // Pour afficher un message à l'utilisateur si les conditions de "if" ne sont pas remplies :
     alert(
       "Merci de renseigner correctement tous les champs du formulaire et de vérifier que votre panier n'est pas vide."
     );
