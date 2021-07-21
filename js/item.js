@@ -30,6 +30,11 @@ const showCamera = (oneCamera) => {
                               <option>Choisir une option</option>
                             </select>
                           </p>
+                          <p>
+                          <label for="quantity">Quantité :</label>
+                          <select id="quantity">
+                          </select>
+                        </p>
                          </div>`;
   product.append(cameraDiv);
 };
@@ -48,21 +53,24 @@ const showLenses = (oneCamera) => {
 
 // Ajout du produit au panier au clic sur le bouton :
 const addToCart = () => {
-  let cart = []; // Déclaration d'une variable qui stockera les produits du panier dans un array
-  // Pour récupérer la valeur associée à la clé "products" dans le localStorage :
-  if (localStorage.getItem("products")) {
-    cart = JSON.parse(localStorage.getItem("products")); // Pour convertir le JSON en objet JS et stocker les données dans "cart"
-  }
-  cart.push(id); // Pour ajouter l'id du produit à la fin de l'array "cart"
-  localStorage.setItem("products", JSON.stringify(cart)); // Pour accéder à l'objet local Storage et lui ajouter une entrée
-  // On transforme le tableau "cart" en chaîne de caractères car les clés et valeurs du localStorage sont toujours des chaînes de caractères
+  // Pour vérifier qu'un objectif a bien été sélectionné avant l'ajout du produit au panier :
+  if (document.getElementById("lenses").selectedIndex == 0) {
+    alert(
+      "Merci de choisir un objectif avant d'ajouter la caméra à votre panier."
+    );
+  } else {
+    let cart = []; // Déclaration d'une variable qui stockera les produits du panier dans un array
+    // Pour récupérer la valeur associée à la clé "products" dans le localStorage :
+    if (localStorage.getItem("products")) {
+      cart = JSON.parse(localStorage.getItem("products")); // Pour convertir le JSON en objet JS et stocker les données dans "cart"
+    }
+    cart.push(id); // Pour ajouter l'id du produit à la fin de l'array "cart"
+    localStorage.setItem("products", JSON.stringify(cart)); // Pour accéder à l'objet local Storage et lui ajouter une entrée
+    // On transforme le tableau "cart" en chaîne de caractères car les clés et valeurs du localStorage sont toujours des chaînes de caractères
 
-  // Pour afficher un message de validation :
-  const itemPage = document.getElementById("product-content");
-  const validationMessage = document.createElement("p");
-  validationMessage.classList.add("bg-secondary", "m-auto", "pb-3");
-  validationMessage.innerHTML = `Produit ajouté au panier !`;
-  itemPage.append(validationMessage);
+    // Pour afficher un message de validation :
+    alert("Produit ajouté au panier !");
+  }
 };
 
 /* On utilise la méthode addEventListener() pour surveiller les clics de souris sur le bouton 

@@ -43,64 +43,77 @@ const displayCart = async () => {
   }
 };
 
-// Pour exécuter la fonction :
-displayCart();
-
 // Pour vider le panier :
 emptyCart = () => {
   localStorage.clear("products");
   location.reload();
 };
 
-/* On utilise la méthode addEventListener() pour surveiller les clics de souris sur le bouton 
-"Vider le panier", qui appelle la fonction emptyCart : */
+// Fonction exécutée au clic de souris sur le bouton "Vider le panier" :
 const emptyCartButton = document.getElementById("empty-cart");
-emptyCartButton.addEventListener("click", emptyCart);
+document.getElementById("empty-cart").addEventListener("click", emptyCart);
+
+// Pour vérifier que le panier n'est pas vide et que les champs du formulaire sont correctement saisis :
+const checkValidity = () => {
+  const lastName = document.getElementById("lastName");
+  const firstName = document.getElementById("firstName");
+  const email = document.getElementById("email");
+  const address = document.getElementById("address");
+  const city = document.getElementById("city");
+
+  if (getCart == null) {
+    alert("Merci d'ajouter au moins un article à votre panier.");
+  } else if (lastName.value == "") {
+    alert("Merci de renseigner votre nom.");
+  } else if (firstName.value == "") {
+    alert("Merci de renseigner votre prénom.");
+  } else if (email.value == "") {
+    alert("Merci de renseigner votre e-mail.");
+  } else if (email.validity.typeMismatch) {
+    alert("Merci de renseigner un e-mail valide.");
+  } else if (address.value == "") {
+    alert("Merci de renseigner votre adresse.");
+  } else if (city.value == "") {
+    alert("Merci de renseigner votre ville.");
+  }
+};
 
 // Pour envoyer les données de la commande et du formulaire au back-end :
 const placeAnOrder = () => {
-  const form = document.getElementById("form");
   const orderButton = document.getElementById("order");
   orderButton.addEventListener("click", async (event) => {
-    // Pour vérifier que le panier n'est pas vide et que les champs du formulaire sont correctement saisis :
-    if (getCart !== null && form.reportValidity()) {
-      let data = {
-        // Pour récupérer les données entrées par l'utilisateur dans le formulaire :
-        contact: {
-          firstName: firstName.value,
-          lastName: lastName.value,
-          address: address.value,
-          city: city.value,
-          email: email.value,
-        },
-        // Pour récupérer les produits du panier stockés dans le localStorage :
-        products: JSON.parse(getCart),
-      };
-      //try {
-      fetch("http://localhost:3000/api/cameras/order", {
+    checkValidity(); // Appel de la fonction pour vérifier la validité
+    let data = {
+      // Pour récupérer les données entrées par l'utilisateur dans le formulaire :
+      contact: {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value,
+      },
+      // Pour récupérer les produits du panier stockés dans le localStorage :
+      products: JSON.parse(getCart),
+    };
+    try {
+      const response = await fetch("http://localhost:3000/api/cameras/order", {
         method: "POST", // Pour envoyer une requête HTTP de type POST au service web afin d'envoyer des données
         headers: { "Content-type": "application/json" }, // Indique le type de contenu envoyé (JSON)
         body: JSON.stringify(data), // Pour convertir la valeur de "data" (contact + products) en chaîne JSON
-      }).then((response) => {
-        const order = response.json();
-        debugger;
-        // Pour stocker l'identifiant de commande reçu, le nom et le prénom dans le localStorage :
-        localStorage.setItem("orderid", order.orderId);
-        localStorage.setItem("firstname", order.contact.firstName);
-        localStorage.setItem("lastname", order.contact.lastName);
-        // Pour afficher la page de confirmation de commande :
-        window.location.href = "notification.html";
-      }); /*catch (err) {
-        console.log(err);
-      } */
-    } else {
-      // Pour afficher un message à l'utilisateur si les conditions de "if" ne sont pas remplies :
-      alert(
-        "Merci de renseigner correctement tous les champs du formulaire et de vérifier que votre panier n'est pas vide."
-      );
+      });
+      const order = await response.json();
+      // Pour stocker l'identifiant de commande reçu, le nom et le prénom dans le localStorage :
+      localStorage.setItem("orderid", order.orderId);
+      localStorage.setItem("firstname", order.contact.firstName);
+      localStorage.setItem("lastname", order.contact.lastName);
+      // Pour afficher la page de confirmation de commande :
+      window.location.href = "notification.html";
+    } catch (err) {
+      console.log(err);
     }
   });
 };
 
-// Pour exécuter la fonction :
+// Appel des fonctions
+displayCart();
 placeAnOrder();
