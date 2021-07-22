@@ -1,9 +1,11 @@
-const showCameras = async () => {
+// Pour afficher tous les articles disponibles à la vente :
+const displayCameras = async () => {
   try {
-    const response = await fetch("http://localhost:3000/api/cameras"); // Pour envoyer une requête HTTP de type GET au service web afin de récupérer les données
-    const data = await response.json(); // Pour convertir le résultat de la requête au format JSON
+    // Pour envoyer une requête HTTP de type GET au service web afin de récupérer les données :
+    const response = await fetch("http://localhost:3000/api/cameras");
+    const data = await response.json();
 
-    // Pour ajouter au DOM tous les articles disponibles à la vente :
+    // Pour ajouter les articles au DOM :
     const camerasList = document.querySelector(".cameralist");
     data.forEach((camera) => {
       const cameraArticle = document.createElement("article");
@@ -30,9 +32,9 @@ const showCameras = async () => {
       camerasList.append(cameraArticle);
     });
   } catch (error) {
-    alert(error); // Bloc exécuté si une erreur survient lors de la requête
+    console.log(error); // Bloc exécuté si une erreur survient lors de la requête
   }
 };
 
 // Appel de la fonction :
-showCameras();
+displayCameras();

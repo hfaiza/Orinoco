@@ -21,9 +21,13 @@ const showCamera = (oneCamera) => {
                           class="solo-item border border-5 border-primary mt-5 mb-2"
                          />
                          <div>
-                          <h1>${oneCamera.name}</h1>
+                          <h1 id="name">${oneCamera.name}</h1>
                           <p>${oneCamera.description}</p>
-                          <p>Prix : ${oneCamera.price / 100} €</p>
+                          <p>Prix :
+                            <span id="price">
+                              ${oneCamera.price / 100}
+                            </span> €
+                          </p>
                           <p>
                             <label for="lenses">Objectif :</label>
                             <select id="lenses">
@@ -31,10 +35,13 @@ const showCamera = (oneCamera) => {
                             </select>
                           </p>
                           <p>
-                          <label for="quantity">Quantité :</label>
-                          <select id="quantity">
-                          </select>
-                        </p>
+                            <label for="quantity">Quantité :</label>
+                            <select id="quantity">
+                             <option>1</option>
+                             <option>2</option>
+                             <option>3</option>
+                            </select>
+                          </p>
                          </div>`;
   product.append(cameraDiv);
 };
@@ -51,29 +58,47 @@ const showLenses = (oneCamera) => {
   });
 };
 
-// Ajout du produit au panier au clic sur le bouton :
-const addToCart = () => {
-  // Pour vérifier qu'un objectif a bien été sélectionné avant l'ajout du produit au panier :
-  if (document.getElementById("lenses").selectedIndex == 0) {
-    alert(
-      "Merci de choisir un objectif avant d'ajouter la caméra à votre panier."
-    );
-  } else {
-    let cart = []; // Déclaration d'une variable qui stockera les produits du panier dans un array
-    // Pour récupérer la valeur associée à la clé "products" dans le localStorage :
-    if (localStorage.getItem("products")) {
-      cart = JSON.parse(localStorage.getItem("products")); // Pour convertir le JSON en objet JS et stocker les données dans "cart"
-    }
-    cart.push(id); // Pour ajouter l'id du produit à la fin de l'array "cart"
-    localStorage.setItem("products", JSON.stringify(cart)); // Pour accéder à l'objet local Storage et lui ajouter une entrée
-    // On transforme le tableau "cart" en chaîne de caractères car les clés et valeurs du localStorage sont toujours des chaînes de caractères
-
-    // Pour afficher un message de validation :
-    alert("Produit ajouté au panier !");
+// Déclaration d'une classe qui sera utilisée pour stocker les informations du produit dans le Local Storage :
+class Item {
+  constructor(id, itemName, price, quantity) {
+    this.id = id;
+    this.itemName = itemName;
+    this.price = price;
+    this.quantity = quantity;
   }
+}
+
+// Pour ajouter le produit au panier :
+const addToCart = () => {
+  const button = document.getElementById("button");
+  button.addEventListener("click", () => {
+    // Pour vérifier qu'un objectif a bien été sélectionné avant l'ajout du produit au panier :
+    if (document.getElementById("lenses").selectedIndex == 0) {
+      alert(
+        "Merci de choisir un objectif avant d'ajouter la caméra à votre panier."
+      );
+    } else {
+      let cart = []; // Déclaration d'une variable qui stockera les produits du panier dans un array
+
+      // Pour récupérer les valeurs à stocker :
+      let quantity = document.getElementById("quantity").value;
+      let itemName = document.getElementById("name").textContent;
+      let price = document.getElementById("price").textContent * quantity;
+
+      // Pour récupérer la valeur associée à la clé "products" dans le localStorage :
+      if (localStorage.getItem("products")) {
+        cart = JSON.parse(localStorage.getItem("products")); // Pour convertir le JSON en objet JS et stocker les données dans "cart"
+      }
+      let item = new Item(id, itemName, price, quantity);
+      cart.push(item); // Pour ajouter l'id du produit à la fin de l'array "cart"
+      localStorage.setItem("products", JSON.stringify(cart)); // Pour accéder à l'objet local Storage et lui ajouter une entrée
+      // On transforme le tableau "cart" en chaîne de caractères car les clés et valeurs du localStorage sont toujours des chaînes de caractères
+
+      // Pour afficher un message de validation :
+      alert("Produit ajouté au panier !");
+    }
+  });
 };
 
-/* On utilise la méthode addEventListener() pour surveiller les clics de souris sur le bouton 
-"Ajouter au panier", qui appelle la fonction addToCart */
-const button = document.getElementById("button");
-button.addEventListener("click", addToCart);
+// Appel des fonctions
+addToCart(); // exécutée au clic de souris sur le bouton "Ajouter au panier"

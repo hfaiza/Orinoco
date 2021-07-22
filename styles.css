@@ -38,7 +38,8 @@ a {
 h1,
 h2,
 #product-content p,
-.message p {
+.message p,
+#price {
   color: #f7edf5 !important;
 }
 
@@ -211,6 +212,11 @@ strong {
 
 input {
   background-color: #f3e9f1 !important;
+}
+
+#small {
+  color: #f7edf5 !important;
+  font-size: 1rem;
 }
 
 /* NOTIFICATION */

@@ -15,7 +15,7 @@ const displayValidationMessage = () => {
                           </p>
                           <p>
                             Votre commande n°${orderId} d'un montant
-                            de ${totalPrice / 100} € a bien été enregistrée.
+                            de ${totalPrice} € a bien été enregistrée.
                           </p>
                           <p>Vous recevrez bientôt un e-mail avec votre facture et un numéro de suivi.</p>
                           <p>À bientôt sur Orinoco !</p>`;

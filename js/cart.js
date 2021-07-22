@@ -1,52 +1,55 @@
+// Déclaration de constantes globales :
 const cartTable = document.getElementById("cart-table"); // Pour accéder au <table> qui affichera les produits du panier
-const getCart = localStorage.getItem("products"); // Pour accéder à la clé "products" du localStorage
-let totalPrice = 0; // Pour stocker le prix total du panier
+const getCart = localStorage.getItem("products"); // Pour accéder à la clé "products" du Local Storage
+const cart = JSON.parse(getCart); // Pour convertir le JSON en objet JS
+const cartIsEmpty = getCart == null; // Panier vide
 
 // Affichage des produits dans le panier :
-const displayCart = async () => {
-  if (getCart == null) {
-    // Si la clé "products" du local Storage n'a pas de valeur :
+const displayCart = () => {
+  if (cartIsEmpty) {
     const cartTableRow = document.createElement("tr");
     cartTableRow.innerHTML = `<td colspan="2" class="text-center p-3">Aucun produit.</td>`;
     cartTable.append(cartTableRow);
   } else {
-    let cart = JSON.parse(getCart); // Pour convertir le JSON en objet JS et stocker les données dans "cart"
-    // Pour exécuter la fonction sur chaque élément du tableau (affichage du nom et du prix de la caméra) :
-    const items = await Promise.all(
-      cart.map((item) => {
-        return fetch(`http://localhost:3000/api/cameras/${item}`)
-          .then((response) => response.json())
-          .catch((error) => alert(error));
-      })
-    );
-    items.forEach((itemInfo) => {
+    cart.forEach((item) => {
       const cartTableRow = document.createElement("tbody");
       cartTableRow.innerHTML = `<tr>
-                                <td class="px-3 py-2">${itemInfo.name}</td>
-                                <td class="px-3 py-2 right">
-                                  ${itemInfo.price / 100} €
-                                </td>
-                              </tr>`;
+                                  <td class="px-3 py-2">${item.itemName} <br/>
+                                  <span id="small">(Quantité : ${item.quantity})</span></td>
+                                  <td class="px-3 py-2 right">
+                                    ${item.price} €
+                                  </td>
+                                </tr>`;
       cartTable.append(cartTableRow);
-      totalPrice += itemInfo.price; // Pour additionner les prix des produits du panier
-      localStorage.setItem("totalprice", totalPrice); // Pour stocker le prix total dans le localStorage
     });
-    // Pour afficher le prix total en bas du panier :
-    const getTotalPrice = localStorage.getItem("totalprice");
+  }
+};
+
+// Pour additionner les prix des produits du panier :
+const calculateTotalPrice = () => {
+  if (!cartIsEmpty) {
+    let totalPrice = 0;
+    cart.forEach((item) => {
+      let itemPrice = item.price;
+      totalPrice += itemPrice;
+    });
     const totalPriceRow = document.createElement("tfoot");
     totalPriceRow.innerHTML = `<td colspan="2" class="right px-3 py-2">
                                 <strong>
-                                  Total : ${getTotalPrice / 100} €
+                                  Total : ${totalPrice} €
                                 </strong>
-                             </td>`;
+                               </td>`;
     cartTable.append(totalPriceRow);
+    localStorage.setItem("totalprice", totalPrice); // Pour stocker le prix total dans le Local Storage
   }
 };
 
 // Pour vider le panier :
-emptyCart = () => {
-  localStorage.clear("products");
-  location.reload();
+const emptyCart = () => {
+  if (confirm("Voulez-vous vider votre panier ?")) {
+    localStorage.clear("products");
+    location.reload();
+  }
 };
 
 // Fonction exécutée au clic de souris sur le bouton "Vider le panier" :
@@ -61,7 +64,7 @@ const checkValidity = () => {
   const address = document.getElementById("address");
   const city = document.getElementById("city");
 
-  if (getCart == null) {
+  if (cartIsEmpty) {
     alert("Merci d'ajouter au moins un article à votre panier.");
   } else if (lastName.value == "") {
     alert("Merci de renseigner votre nom.");
@@ -78,10 +81,22 @@ const checkValidity = () => {
   }
 };
 
+// Pour stocker les id des produits du panier dans le Local Storage :
+const getIds = () => {
+  let ids = [];
+  cart.forEach((item) => {
+    let quantity = item.quantity;
+    for (i = 1; i <= quantity; i++) {
+      ids.push(item.id);
+    }
+  });
+  localStorage.setItem("id", JSON.stringify(ids));
+};
+
 // Pour envoyer les données de la commande et du formulaire au back-end :
 const placeAnOrder = () => {
   const orderButton = document.getElementById("order");
-  orderButton.addEventListener("click", async (event) => {
+  orderButton.addEventListener("click", async () => {
     checkValidity(); // Appel de la fonction pour vérifier la validité
     let data = {
       // Pour récupérer les données entrées par l'utilisateur dans le formulaire :
@@ -93,27 +108,32 @@ const placeAnOrder = () => {
         email: email.value,
       },
       // Pour récupérer les produits du panier stockés dans le localStorage :
-      products: JSON.parse(getCart),
+      products: JSON.parse(localStorage.getItem("id")),
     };
     try {
+      // Pour envoyer une requête HTTP de type POST au service web afin d'envoyer des données
       const response = await fetch("http://localhost:3000/api/cameras/order", {
-        method: "POST", // Pour envoyer une requête HTTP de type POST au service web afin d'envoyer des données
-        headers: { "Content-type": "application/json" }, // Indique le type de contenu envoyé (JSON)
-        body: JSON.stringify(data), // Pour convertir la valeur de "data" (contact + products) en chaîne JSON
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(data),
       });
       const order = await response.json();
-      // Pour stocker l'identifiant de commande reçu, le nom et le prénom dans le localStorage :
+
+      // Pour stocker l'identifiant de commande reçu, le nom et le prénom dans le Local Storage :
       localStorage.setItem("orderid", order.orderId);
       localStorage.setItem("firstname", order.contact.firstName);
       localStorage.setItem("lastname", order.contact.lastName);
+
       // Pour afficher la page de confirmation de commande :
       window.location.href = "notification.html";
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error); // Bloc exécuté si une erreur survient lors de la requête
     }
   });
 };
 
 // Appel des fonctions
 displayCart();
+calculateTotalPrice();
+getIds();
 placeAnOrder();
