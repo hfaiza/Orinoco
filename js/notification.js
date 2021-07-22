@@ -22,11 +22,12 @@ const displayValidationMessage = () => {
   main.append(messageDiv);
 };
 
+// Appel de la fonction :
+displayValidationMessage();
+
 // Pour supprimer les données stockées dans le Local Storage :
 const clearLocalStorage = () => {
   localStorage.clear();
 };
 
-// Appel des fonctions :
-displayValidationMessage();
 document.body.addEventListener("click", clearLocalStorage); // exécutée au clic de souris sur la page

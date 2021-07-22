@@ -83,14 +83,16 @@ const checkValidity = () => {
 
 // Pour stocker les id des produits du panier dans le Local Storage :
 const getIds = () => {
-  let ids = [];
-  cart.forEach((item) => {
-    let quantity = item.quantity;
-    for (i = 1; i <= quantity; i++) {
-      ids.push(item.id);
-    }
-  });
-  localStorage.setItem("id", JSON.stringify(ids));
+  if (!cartIsEmpty) {
+    let ids = [];
+    cart.forEach((item) => {
+      let quantity = item.quantity;
+      for (i = 1; i <= quantity; i++) {
+        ids.push(item.id);
+      }
+    });
+    localStorage.setItem("id", JSON.stringify(ids));
+  }
 };
 
 // Pour envoyer les données de la commande et du formulaire au back-end :
@@ -107,11 +109,11 @@ const placeAnOrder = () => {
         city: city.value,
         email: email.value,
       },
-      // Pour récupérer les produits du panier stockés dans le localStorage :
+      // Pour récupérer les produits du panier stockés dans le Local Storage :
       products: JSON.parse(localStorage.getItem("id")),
     };
     try {
-      // Pour envoyer une requête HTTP de type POST au service web afin d'envoyer des données
+      // Pour envoyer une requête HTTP de type POST au service web afin d'envoyer des données :
       const response = await fetch("http://localhost:3000/api/cameras/order", {
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -132,8 +134,8 @@ const placeAnOrder = () => {
   });
 };
 
-// Appel des fonctions
+// Appel des fonctions :
 displayCart();
 calculateTotalPrice();
 getIds();
-placeAnOrder();
+placeAnOrder(); // qui exécute elle-même la fonction checkValidity()
