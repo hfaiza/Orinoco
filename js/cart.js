@@ -46,15 +46,19 @@ const calculateTotalPrice = () => {
 
 // Pour vider le panier :
 const emptyCart = () => {
-  if (confirm("Voulez-vous vider votre panier ?")) {
-    localStorage.clear("products");
-    location.reload();
+  if (!cartIsEmpty) {
+    document.getElementById("empty-cart").addEventListener("click", () => {
+      if (
+        confirm(
+          "Voulez-vous vider votre panier ? Cette action est irréversible."
+        )
+      ) {
+        localStorage.clear("products");
+        location.reload();
+      }
+    });
   }
 };
-
-// Fonction exécutée au clic de souris sur le bouton "Vider le panier" :
-const emptyCartButton = document.getElementById("empty-cart");
-document.getElementById("empty-cart").addEventListener("click", emptyCart);
 
 // Pour vérifier que le panier n'est pas vide et que les champs du formulaire sont correctement saisis :
 const checkValidity = () => {
@@ -137,5 +141,6 @@ const placeAnOrder = () => {
 // Appel des fonctions :
 displayCart();
 calculateTotalPrice();
+emptyCart(); // exécutée au clic de souris sur le bouton "Vider le panier"
 getIds();
 placeAnOrder(); // qui exécute elle-même la fonction checkValidity()
