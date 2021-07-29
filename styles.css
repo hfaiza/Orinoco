@@ -160,7 +160,7 @@ footer ul {
   transition: all 0.2s ease-in-out;
 }
 
-#button:hover,
+#add-to-cart:hover,
 #empty-cart:hover,
 #order:hover {
   transform: scale(1.02);

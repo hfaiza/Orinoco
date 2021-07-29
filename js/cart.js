@@ -91,6 +91,7 @@ const checkValidity = () => {
   }
   if (errorMessage) {
     alert(errorMessage);
+    preventDefault();
   }
 };
 
