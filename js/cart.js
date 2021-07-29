@@ -1,8 +1,7 @@
 // Déclaration de constantes globales :
 const cartTable = document.getElementById("cart-table"); // Pour accéder au <table> qui affichera les produits du panier
-const getCart = localStorage.getItem("products"); // Pour accéder à la clé "products" du Local Storage
-const cart = JSON.parse(getCart); // Pour convertir le JSON en objet JS
-const cartIsEmpty = getCart == null; // Panier vide
+const cart = JSON.parse(localStorage.getItem("products")); // Pour accéder à la clé "products" du Local Storage et convertir le JSON en objet JS
+const cartIsEmpty = cart == null; // Panier vide
 
 // Affichage des produits dans le panier :
 const displayCart = () => {
@@ -12,14 +11,14 @@ const displayCart = () => {
     cartTable.append(cartTableRow);
   } else {
     cart.forEach((item) => {
-      const cartTableRow = document.createElement("tbody");
-      cartTableRow.innerHTML = `<tr>
-                                  <td class="px-3 py-2">${item.itemName} <br/>
-                                  <span id="small">(Quantité : ${item.quantity})</span></td>
-                                  <td class="px-3 py-2 right">
-                                    ${item.price} €
-                                  </td>
-                                </tr>`;
+      const cartTableRow = document.createElement("tr");
+      cartTableRow.innerHTML = `<td class="px-3 py-2">
+                                  ${item.itemName} <br/>
+                                  <span id="small">(Quantité : ${item.itemQuantity})</span>
+                                </td>
+                                <td class="px-3 py-2 right">
+                                  ${item.itemPrice} €
+                                </td>`;
       cartTable.append(cartTableRow);
     });
   }
@@ -30,8 +29,7 @@ const calculateTotalPrice = () => {
   if (!cartIsEmpty) {
     let totalPrice = 0;
     cart.forEach((item) => {
-      let itemPrice = item.price;
-      totalPrice += itemPrice;
+      totalPrice += item.itemPrice;
     });
     const totalPriceRow = document.createElement("tfoot");
     totalPriceRow.innerHTML = `<td colspan="2" class="right px-3 py-2">
@@ -53,7 +51,7 @@ const emptyCart = () => {
           "Voulez-vous vider votre panier ? Cette action est irréversible."
         )
       ) {
-        localStorage.clear("products");
+        localStorage.clear();
         location.reload();
       }
     });
@@ -68,20 +66,31 @@ const checkValidity = () => {
   const address = document.getElementById("address");
   const city = document.getElementById("city");
 
+  let errorMessage = "";
+
   if (cartIsEmpty) {
-    alert("Merci d'ajouter au moins un article à votre panier.");
-  } else if (lastName.value == "") {
-    alert("Merci de renseigner votre nom.");
-  } else if (firstName.value == "") {
-    alert("Merci de renseigner votre prénom.");
-  } else if (email.value == "") {
-    alert("Merci de renseigner votre e-mail.");
-  } else if (email.validity.typeMismatch) {
-    alert("Merci de renseigner un e-mail valide.");
-  } else if (address.value == "") {
-    alert("Merci de renseigner votre adresse.");
-  } else if (city.value == "") {
-    alert("Merci de renseigner votre ville.");
+    errorMessage += "Merci d'ajouter au moins un article à votre panier. \n";
+  }
+  if (lastName.value.trim() == "") {
+    errorMessage += "Merci de renseigner votre nom. \n";
+  }
+  if (firstName.value.trim() == "") {
+    errorMessage += "Merci de renseigner votre prénom. \n";
+  }
+  if (email.value.trim() == "") {
+    errorMessage += "Merci de renseigner votre e-mail. \n";
+  }
+  if (email.validity.typeMismatch) {
+    errorMessage += "Merci de renseigner un e-mail valide. \n";
+  }
+  if (address.value.trim() == "") {
+    errorMessage += "Merci de renseigner votre adresse. \n";
+  }
+  if (city.value.trim() == "") {
+    errorMessage += "Merci de renseigner votre ville.";
+  }
+  if (errorMessage) {
+    alert(errorMessage);
   }
 };
 
@@ -90,8 +99,7 @@ const getIds = () => {
   if (!cartIsEmpty) {
     let ids = [];
     cart.forEach((item) => {
-      let quantity = item.quantity;
-      for (i = 1; i <= quantity; i++) {
+      for (i = 1; i <= item.itemQuantity; i++) {
         ids.push(item.id);
       }
     });

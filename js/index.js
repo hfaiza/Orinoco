@@ -1,18 +1,18 @@
-const getData = async () => {
+const getCameras = async () => {
   try {
     // Pour envoyer une requête HTTP de type GET au service web afin de récupérer les données :
     const response = await fetch("http://localhost:3000/api/cameras");
-    const data = await response.json();
-    displayCameras(data); // Appel de la fonction
+    const cameras = await response.json();
+    displayCameras(cameras); // Appel de la fonction
   } catch (error) {
     console.log(error); // Bloc exécuté si une erreur survient lors de la requête
   }
 };
 
 // Pour afficher tous les articles disponibles à la vente :
-const displayCameras = (data) => {
-  const camerasList = document.querySelector(".cameralist");
-  data.forEach((camera) => {
+const displayCameras = (cameras) => {
+  const container = document.querySelector(".cameralist");
+  cameras.forEach((camera) => {
     const cameraArticle = document.createElement("article");
     cameraArticle.classList.add("border", "border-5", "border-primary", "gap");
     cameraArticle.innerHTML = `<a href="item.html?id=${camera._id}">
@@ -29,9 +29,9 @@ const displayCameras = (data) => {
                                   </p>
                                 </div>
                                </a>`;
-    camerasList.append(cameraArticle);
+    container.append(cameraArticle);
   });
 };
 
 // Appel de la fonction :
-getData();
+getCameras();

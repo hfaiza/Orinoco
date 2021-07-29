@@ -7,7 +7,7 @@ const displayValidationMessage = () => {
   const lastName = localStorage.getItem("lastname");
 
   // Pour afficher les données récupérées :
-  const main = document.querySelector(".message");
+  const container = document.querySelector(".message");
   const messageDiv = document.createElement("div");
   messageDiv.innerHTML = `<p>
                             Merci pour votre achat, 
@@ -19,16 +19,16 @@ const displayValidationMessage = () => {
                           </p>
                           <p>Vous recevrez bientôt un e-mail avec votre facture et un numéro de suivi.</p>
                           <p>À bientôt sur Orinoco !</p>`;
-  main.append(messageDiv);
+  container.append(messageDiv);
 };
 
-// Pour supprimer les données stockées dans le Local Storage :
-const clearLocalStorage = () => {
-  document.body.addEventListener("click", () => {
-    localStorage.clear();
+// Pour vider le panier au chargement de la page :
+const clearCart = () => {
+  window.addEventListener("load", () => {
+    localStorage.removeItem("products");
   });
 };
 
 // Appel des fonctions :
 displayValidationMessage();
-clearLocalStorage(); // exécutée au clic de souris sur la page
+clearCart();
