@@ -66,6 +66,7 @@ const checkValidity = () => {
   const address = document.getElementById("address");
   const city = document.getElementById("city");
 
+  // Affichage de messages d'erreur si les conditions ne sont pas remplies :
   let errorMessage = "";
 
   if (cartIsEmpty) {
@@ -113,8 +114,10 @@ const placeAnOrder = () => {
   const orderButton = document.getElementById("order");
   orderButton.addEventListener("click", async () => {
     checkValidity(); // Appel de la fonction pour vérifier la validité
+
+    /* Pour récupérer les données entrées par l'utilisateur dans le formulaire 
+    et les produits du panier stockés dans le Local Storage : */
     let data = {
-      // Pour récupérer les données entrées par l'utilisateur dans le formulaire :
       contact: {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -122,9 +125,9 @@ const placeAnOrder = () => {
         city: city.value,
         email: email.value,
       },
-      // Pour récupérer les produits du panier stockés dans le Local Storage :
       products: JSON.parse(localStorage.getItem("id")),
     };
+
     try {
       // Pour envoyer une requête HTTP de type POST au service web afin d'envoyer des données :
       const response = await fetch("http://localhost:3000/api/cameras/order", {
