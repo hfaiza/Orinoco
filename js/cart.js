@@ -59,7 +59,7 @@ const emptyCart = () => {
 };
 
 // Pour vérifier que le panier n'est pas vide et que les champs du formulaire sont correctement saisis :
-const checkValidity = () => {
+const checkValidity = (event) => {
   const lastName = document.getElementById("lastName");
   const firstName = document.getElementById("firstName");
   const email = document.getElementById("email");
@@ -92,7 +92,7 @@ const checkValidity = () => {
   }
   if (errorMessage) {
     alert(errorMessage);
-    preventDefault();
+    event.preventDefault();
   }
 };
 
@@ -111,9 +111,10 @@ const getIds = () => {
 
 // Pour envoyer les données de la commande et du formulaire au back-end :
 const placeAnOrder = () => {
-  const orderButton = document.getElementById("order");
-  orderButton.addEventListener("click", async () => {
-    checkValidity(); // Appel de la fonction pour vérifier la validité
+  const form = document.getElementById("form");
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    checkValidity(event); // Appel de la fonction pour vérifier la validité
 
     /* Pour récupérer les données entrées par l'utilisateur dans le formulaire 
     et les produits du panier stockés dans le Local Storage : */
