@@ -1,10 +1,10 @@
 // Pour afficher un message personnalisé à l'utilisateur suite à sa commande :
 const displayValidationMessage = () => {
   // Pour récupérer les données stockées dans le Local Storage :
-  const totalPrice = localStorage.getItem("totalprice");
-  const orderId = localStorage.getItem("orderid");
-  const firstName = localStorage.getItem("firstname");
-  const lastName = localStorage.getItem("lastname");
+  const totalPrice = localStorage.getItem("totalPrice");
+  const orderId = localStorage.getItem("orderId");
+  const firstName = localStorage.getItem("firstName");
+  const lastName = localStorage.getItem("lastName");
 
   // Pour afficher les données récupérées :
   const container = document.querySelector(".message");
@@ -22,13 +22,5 @@ const displayValidationMessage = () => {
   container.append(messageDiv);
 };
 
-// Pour vider le panier au chargement de la page :
-const clearCart = () => {
-  window.addEventListener("load", () => {
-    localStorage.removeItem("products");
-  });
-};
-
-// Appel des fonctions :
+// Appel de la fonction :
 displayValidationMessage();
-clearCart();

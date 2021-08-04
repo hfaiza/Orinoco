@@ -1,7 +1,7 @@
 // Déclaration de constantes globales :
 const cartTable = document.getElementById("cart-table"); // Pour accéder au <table> qui affichera les produits du panier
-const cart = JSON.parse(localStorage.getItem("products")); // Pour accéder à la clé "products" du Local Storage et convertir le JSON en objet JS
-const cartIsEmpty = cart == null; // Panier vide
+const productsInCart = JSON.parse(localStorage.getItem("productsInCart")); // Pour accéder à la clé "productsInCart" du Local Storage et convertir le JSON en objet JS
+const cartIsEmpty = productsInCart == null; // Panier vide
 
 // Affichage des produits dans le panier :
 const displayCart = () => {
@@ -10,7 +10,7 @@ const displayCart = () => {
     cartTableRow.innerHTML = `<td colspan="2" class="text-center p-3">Aucun produit.</td>`;
     cartTable.append(cartTableRow);
   } else {
-    cart.forEach((item) => {
+    productsInCart.forEach((item) => {
       const cartTableRow = document.createElement("tr");
       cartTableRow.innerHTML = `<td class="px-3 py-2">
                                   ${item.itemName} <br/>
@@ -27,10 +27,9 @@ const displayCart = () => {
 // Pour additionner les prix des produits du panier :
 const calculateTotalPrice = () => {
   if (!cartIsEmpty) {
-    let totalPrice = 0;
-    cart.forEach((item) => {
-      totalPrice += item.itemPrice;
-    });
+    let totalPrice = productsInCart.reduce((totalPrice, item) => {
+      return totalPrice + item.itemPrice;
+    }, 0);
     const totalPriceRow = document.createElement("tfoot");
     totalPriceRow.innerHTML = `<td colspan="2" class="right px-3 py-2">
                                 <strong>
@@ -38,7 +37,7 @@ const calculateTotalPrice = () => {
                                 </strong>
                                </td>`;
     cartTable.append(totalPriceRow);
-    localStorage.setItem("totalprice", totalPrice); // Pour stocker le prix total dans le Local Storage
+    localStorage.setItem("totalPrice", totalPrice); // Pour stocker le prix total dans le Local Storage
   }
 };
 
@@ -92,15 +91,16 @@ const checkValidity = (event) => {
   }
   if (errorMessage) {
     alert(errorMessage);
-    event.preventDefault();
+    return false;
   }
+  return true;
 };
 
 // Pour stocker les id des produits du panier dans le Local Storage :
 const getIds = () => {
   if (!cartIsEmpty) {
     let ids = [];
-    cart.forEach((item) => {
+    productsInCart.forEach((item) => {
       for (i = 1; i <= item.itemQuantity; i++) {
         ids.push(item.id);
       }
@@ -114,39 +114,43 @@ const placeAnOrder = () => {
   const form = document.getElementById("form");
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    checkValidity(event); // Appel de la fonction pour vérifier la validité
-
-    /* Pour récupérer les données entrées par l'utilisateur dans le formulaire 
+    if (checkValidity(event)) {
+      /* Pour récupérer les données entrées par l'utilisateur dans le formulaire 
     et les produits du panier stockés dans le Local Storage : */
-    let data = {
-      contact: {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        address: address.value,
-        city: city.value,
-        email: email.value,
-      },
-      products: JSON.parse(localStorage.getItem("id")),
-    };
+      let data = {
+        contact: {
+          firstName: firstName.value,
+          lastName: lastName.value,
+          address: address.value,
+          city: city.value,
+          email: email.value,
+        },
+        products: JSON.parse(localStorage.getItem("id")),
+      };
 
-    try {
-      // Pour envoyer une requête HTTP de type POST au service web afin d'envoyer des données :
-      const response = await fetch("http://localhost:3000/api/cameras/order", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const order = await response.json();
+      try {
+        // Pour envoyer une requête HTTP de type POST au service web afin d'envoyer des données :
+        const response = await fetch(
+          "http://localhost:3000/api/cameras/order",
+          {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(data),
+          }
+        );
+        const order = await response.json();
 
-      // Pour stocker l'identifiant de commande reçu, le nom et le prénom dans le Local Storage :
-      localStorage.setItem("orderid", order.orderId);
-      localStorage.setItem("firstname", order.contact.firstName);
-      localStorage.setItem("lastname", order.contact.lastName);
+        // Pour stocker l'identifiant de commande reçu, le nom et le prénom dans le Local Storage :
+        localStorage.setItem("orderId", order.orderId);
+        localStorage.setItem("firstName", order.contact.firstName);
+        localStorage.setItem("lastName", order.contact.lastName);
+        localStorage.removeItem("productsInCart");
 
-      // Pour afficher la page de confirmation de commande :
-      window.location.href = "notification.html";
-    } catch (error) {
-      console.log(error); // Bloc exécuté si une erreur survient lors de la requête
+        // Pour afficher la page de confirmation de commande :
+        window.location.href = "notification.html";
+      } catch (error) {
+        console.log(error); // Bloc exécuté si une erreur survient lors de la requête
+      }
     }
   });
 };

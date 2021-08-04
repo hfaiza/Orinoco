@@ -82,7 +82,7 @@ const addToCart = () => {
         "Merci de choisir un objectif avant d'ajouter la caméra à votre panier."
       );
     } else {
-      let cart = []; // Déclaration d'une variable qui stockera les produits du panier dans un array
+      let productsInCart = []; // Déclaration d'une variable qui stockera les produits du panier dans un array
 
       // Pour récupérer les valeurs à stocker dans le Local Storage :
       let itemQuantity = quantity.value;
@@ -90,19 +90,19 @@ const addToCart = () => {
       let itemPrice = price.textContent * itemQuantity;
 
       // Pour récupérer la valeur associée à la clé "products" dans le Local Storage :
-      if (localStorage.getItem("products")) {
-        cart = JSON.parse(localStorage.getItem("products"));
+      if (localStorage.getItem("productsInCart")) {
+        productsInCart = JSON.parse(localStorage.getItem("productsInCart"));
       }
 
       // Création d'un objet "produit" :
       let item = new Item(id, itemName, itemPrice, itemQuantity);
 
       // Si le produit n'est pas déjà dans le panier : ajout du produit à l'array cart, puis mise à jour du Local Storage :
-      if (cart.find((i) => i.id === id)) {
+      if (productsInCart.find((i) => i.id === id)) {
         alert("Vous avez déjà ajouté cet article à votre panier.");
       } else {
-        cart.push(item);
-        localStorage.setItem("products", JSON.stringify(cart));
+        productsInCart.push(item);
+        localStorage.setItem("productsInCart", JSON.stringify(productsInCart));
         alert("Produit ajouté au panier !");
       }
     }
